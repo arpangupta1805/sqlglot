@@ -20,6 +20,8 @@ from sqlglot.helper import (
     AutoName,
     flatten,
     is_int,
+    is_iso_date,
+    is_iso_datetime,
     seq_get,
     suggest_closest_match_and_fail,
     to_bool,
@@ -2452,6 +2454,8 @@ def date_delta_to_binary_interval_op(
                             exp.TimestampSub,
                         ),
                     )
+                    # A datetime literal would lose its time part if it were cast to DATE
+                    or (not is_iso_date(this.name) and is_iso_datetime(this.name))
                     else exp.DType.DATE
                 )
 

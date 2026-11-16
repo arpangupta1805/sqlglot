@@ -96,6 +96,24 @@ class TestMySQL(Validator):
                 )
 
         self.validate_all(
+            "SELECT DATE_ADD('2024-01-31 10:00:00', INTERVAL 2 HOUR)",
+            write={
+                "duckdb": "SELECT CAST('2024-01-31 10:00:00' AS TIMESTAMP) + INTERVAL '2' HOUR",
+            },
+        )
+        self.validate_all(
+            "SELECT DATE_SUB('2024-01-31 10:00:00', INTERVAL 1 DAY)",
+            write={
+                "duckdb": "SELECT CAST('2024-01-31 10:00:00' AS TIMESTAMP) - INTERVAL '1' DAY",
+            },
+        )
+        self.validate_all(
+            "SELECT DATE_ADD('2024-01-31', INTERVAL 1 DAY)",
+            write={
+                "duckdb": "SELECT CAST('2024-01-31' AS DATE) + INTERVAL '1' DAY",
+            },
+        )
+        self.validate_all(
             "SELECT DATE_SUB('2024-01-01 10:00:00.123456', INTERVAL 2 HOUR)",
             write={
                 "hive": "SELECT CAST('2024-01-01 10:00:00.123456' AS TIMESTAMP) - INTERVAL '2' HOUR",
